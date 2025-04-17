@@ -15,7 +15,4 @@ typedef struct {
 Estrada *getEstrada(const char *nomeArquivo);
 double calcularMenorVizinhanca(const char *nomeArquivo);
 char *cidadeMenorVizinhanca(const char *nomeArquivo);
-FILE *abrirarq(const char *nomeArquivo, const char *modo);
-void fechararq(FILE *arq);
-
 #endif

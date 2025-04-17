@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "cidades.h"
-
+FILE *abrirarq(const char *nomeArquivo, const char *modo);
+void fechararq(FILE *arq);
 FILE *abrirarq(const char *nomeArquivo, const char *modo) {
     FILE *arq = fopen(nomeArquivo, modo);
     if (arq == NULL) {
@@ -11,26 +12,24 @@ FILE *abrirarq(const char *nomeArquivo, const char *modo) {
     }
     return arq;
 }
-
 void fechararq(FILE *arq) {
     if (arq) {
         fclose(arq);
     }
 }
-
 Estrada *getEstrada(const char *nomeArquivo) {
     FILE *arquivo = abrirarq(nomeArquivo, "r");
 
-    Estrada *estrada = (Estrada *)malloc(sizeof(Estrada));
+    Estrada *estrada = (Estrada *)malloc(sizeof(Estrada)); //alocando memoria para os dados de estrada,como indicado pelo professor
     if (!estrada) {
         perror("Erro ao alocar memória para Estrada");
         fechararq(arquivo);
         return NULL;
     }
 
-    fscanf(arquivo, "%d %d", &estrada->T, &estrada->N);
+    fscanf(arquivo, "%d %d", &estrada->T, &estrada->N); //armazenando dados do csv para as variaveis da struct
 
-    estrada->C = (Cidade *)malloc(estrada->N * sizeof(Cidade));
+    estrada->C = (Cidade *)malloc(estrada->N * sizeof(Cidade)); //alocando memoria para os doados de cidade que etsa dentro da struct estrada.
     if (!estrada->C) {
         perror("Erro ao alocar memória para cidades");
         free(estrada);
@@ -38,7 +37,7 @@ Estrada *getEstrada(const char *nomeArquivo) {
         return NULL;
     }
 
-    for (int i = 0; i < estrada->N; i++) {
+    for (int i = 0; i < estrada->N; i++) {  //armazenando dados  para cada cidade do numero de cidades indicado.
         fscanf(arquivo, "%d %[^\n]s", &estrada->C[i].Posicao, estrada->C[i].Nome);
     }
 
@@ -99,12 +98,11 @@ char *cidadeMenorVizinhanca(const char *nomeArquivo) {
         double vizinhanca = 0.0;
         for (int j = 0; j < N; j++) {
             if (i != j) {
-                vizinhanca += abs(cidades[i].Posicao - cidades[j].Posicao);
+                vizinhanca += abs(cidades[i].Posicao - cidades[j].Posicao); //funçao contida em stdlib,para sabe o valor absoluto(usei pois estamos tratando de um linha reta)
             }
         }
         if (vizinhanca == menorVizinhanca) {
-            cidadeMenor = strdup(cidades[i].Nome); // criar cópia segura da string
-            break;
+            cidadeMenor = strdup(cidades[i].Nome);
         }
     }
 
