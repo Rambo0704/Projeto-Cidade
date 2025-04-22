@@ -28,7 +28,8 @@ Estrada *getEstrada(const char *nomeArquivo) {
     }
 
     fscanf(arquivo, "%d %d", &estrada->T, &estrada->N); //armazenando dados do csv para as variaveis da struct
-
+    printf("Número de cidades: %d\n", estrada->N);
+    printf("Comprimento da estrada: %d\n", estrada->T);
     estrada->C = (Cidade *)malloc(estrada->N * sizeof(Cidade)); //alocando memoria para os doados de cidade que etsa dentro da struct estrada.
     if (!estrada->C) {
         perror("Erro ao alocar memória para cidades");
@@ -39,17 +40,17 @@ Estrada *getEstrada(const char *nomeArquivo) {
 
     for (int i = 0; i < estrada->N; i++) {  //armazenando dados  para cada cidade do numero de cidades indicado.
         fscanf(arquivo, "%d %[^\n]s", &estrada->C[i].Posicao, estrada->C[i].Nome);
+        printf("Cidade %d: %s, Posicao: %d\n",i+1, estrada->C[i].Nome, estrada->C[i].Posicao);
     }
 
     fechararq(arquivo);
     return estrada;
 }
-
 double calcularMenorVizinhanca(const char *nomeArquivo) {
     FILE *arquivo = abrirarq(nomeArquivo, "r");
     int N, T;
     fscanf(arquivo, "%d %d", &T, &N);
-    Cidade *cidades = (Cidade *)malloc(N * sizeof(Cidade));
+    Cidade *cidades = (Cidade *)malloc(N * sizeof(Cidade));                    
     if (!cidades) {
         perror("Erro ao alocar memória para cidades");
         fechararq(arquivo);
@@ -59,7 +60,7 @@ double calcularMenorVizinhanca(const char *nomeArquivo) {
         fscanf(arquivo, "%d %[^\n]s", &cidades[i].Posicao, cidades[i].Nome);
     }
 
-    double menorVizinhanca = -1;
+    double menorVizinhanca = -1;//inicializando com -1 para fazer a comparação com a vizinhança que inicializa com 0
     for (int i = 0; i < N; i++) {
         double vizinhanca = 0.0;
         for (int j = 0; j < N; j++) {
@@ -76,7 +77,6 @@ double calcularMenorVizinhanca(const char *nomeArquivo) {
     fechararq(arquivo);
     return menorVizinhanca;
 }
-
 char *cidadeMenorVizinhanca(const char *nomeArquivo) {
     FILE *arquivo = abrirarq(nomeArquivo, "r");
     int N, T;
@@ -102,7 +102,7 @@ char *cidadeMenorVizinhanca(const char *nomeArquivo) {
             }
         }
         if (vizinhanca == menorVizinhanca) {
-            cidadeMenor = strdup(cidades[i].Nome);
+            cidadeMenor = strdup(cidades[i].Nome); //pego uma variavel que esta em memoria alocada e atribuo a uma variavel sem emoria alocada.
         }
     }
 
