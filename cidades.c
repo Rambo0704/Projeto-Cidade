@@ -50,6 +50,7 @@ double calcularMenorVizinhanca(const char *nomeArquivo) {
     FILE *arquivo = abrirarq(nomeArquivo, "r");
     int N, T;
     fscanf(arquivo, "%d %d", &T, &N);
+
     Cidade *cidades = (Cidade *)malloc(N * sizeof(Cidade));                    
     if (!cidades) {
         perror("Erro ao alocar memória para cidades");
@@ -65,7 +66,7 @@ double calcularMenorVizinhanca(const char *nomeArquivo) {
         double vizinhanca = 0.0;
         for (int j = 0; j < N; j++) {
             if (i != j) {
-                vizinhanca += abs(cidades[i].Posicao - cidades[j].Posicao);//encontrei essa funçao abs que esta na biblioteca stdlib, ela retorna o valor absoluto de um inteiro, ou seja, o valor sem sinal.
+                vizinhanca = abs(cidades[i].Posicao - cidades[j].Posicao);//encontrei essa funçao abs que esta na biblioteca stdlib, ela retorna o valor absoluto de um inteiro, ou seja, o valor sem sinal.
             }
         }
         if (menorVizinhanca < 0 || vizinhanca < menorVizinhanca) {
