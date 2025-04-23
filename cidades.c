@@ -44,16 +44,6 @@ Estrada *getEstrada(const char *nomeArquivo) {
 }
 double calcularMenorVizinhanca(const char *nomeArquivo) {
     Estrada *estrada = getEstrada(nomeArquivo);
-    if (!estrada) return -1;
-    for (int i = 0; i < estrada->N - 1; i++) {
-        for (int j = 0; j < estrada->N - i - 1; j++) {
-            if (estrada->C[j].Posicao > estrada->C[j + 1].Posicao) {
-                Cidade temp = estrada->C[j];
-                estrada->C[j] = estrada->C[j + 1];
-                estrada->C[j + 1] = temp;
-            }
-        }
-    }
     double menorVizinhanca = estrada->T;
     for (int i = 0; i < estrada->N; i++) {
         double inicio, fim;
@@ -77,7 +67,6 @@ double calcularMenorVizinhanca(const char *nomeArquivo) {
     free(estrada);
     return menorVizinhanca;
 }
-
 char *cidadeMenorVizinhanca(const char *nomeArquivo) {
     FILE *arquivo = abrirarq(nomeArquivo, "r");
     Estrada *estrada = getEstrada(nomeArquivo);

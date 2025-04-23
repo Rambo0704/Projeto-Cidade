@@ -3,6 +3,7 @@
 #include <string.h>
 #include "cidades.h"
 int main() {
-    cidadeMenorVizinhanca("cidades.txt");
+    float calc = calcularMenorVizinhanca("cidades.txt");
+    printf("%f",calc);
     return 0;
 }
