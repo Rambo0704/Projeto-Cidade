@@ -88,22 +88,30 @@ char *cidadeMenorVizinhanca(const char *nomeArquivo) {
     double menorVizinhanca = calcularMenorVizinhanca(nomeArquivo);
     char *cidadeMenor = NULL;
     for (int i = 0; i < estrada->N; i++) {
-        double inicio = (i == 0) ? 0 :
-            (estrada->C[i].Posicao + estrada->C[i - 1].Posicao) / 2.0;
-        double fim = (i == estrada->N - 1) ? estrada->T :
-            (estrada->C[i].Posicao + estrada->C[i + 1].Posicao) / 2.0;
+        double inicio;
+        if (i == 0) {
+            inicio = 0;
+        } else {
+            inicio = (estrada->C[i].Posicao + estrada->C[i - 1].Posicao) / 2.0;
+        }
+
+        double fim;
+        if (i == estrada->N - 1) {
+            fim = estrada->T;
+        } else {
+            fim = (estrada->C[i].Posicao + estrada->C[i + 1].Posicao) / 2.0;
+        }
 
         double vizinhanca = fim - inicio;
-
         if (vizinhanca == menorVizinhanca) {
             if (cidadeMenor) free(cidadeMenor);
             cidadeMenor = strdup(estrada->C[i].Nome);
             break;
         }
     }
-
-    printf("Menor vizinhança: %s\n", cidadeMenor);
+    printf("Menor vizinhanca: %s\n", cidadeMenor);
     free(estrada->C);
     free(estrada);
     return cidadeMenor;
 }
+
