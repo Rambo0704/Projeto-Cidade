@@ -44,6 +44,15 @@ Estrada *getEstrada(const char *nomeArquivo) {
 }
 double calcularMenorVizinhanca(const char *nomeArquivo) {
     Estrada *estrada = getEstrada(nomeArquivo);
+    for (int i = 0; i < estrada->N - 1; i++) {
+        for (int j = 0; j < estrada->N - i - 1; j++) {
+            if (estrada->C[j].Posicao > estrada->C[j + 1].Posicao) {
+                Cidade temp = estrada->C[j];
+                estrada->C[j] = estrada->C[j + 1];
+                estrada->C[j + 1] = temp;
+            }
+        }
+    }
     double menorVizinhanca = estrada->T;
     for (int i = 0; i < estrada->N; i++) {
         double inicio, fim;
@@ -62,24 +71,39 @@ double calcularMenorVizinhanca(const char *nomeArquivo) {
         if (vizinhanca < menorVizinhanca)
             menorVizinhanca = vizinhanca;
     }
-
-    free(estrada->C);
-    free(estrada);
     return menorVizinhanca;
 }
 char *cidadeMenorVizinhanca(const char *nomeArquivo) {
-    FILE *arquivo = abrirarq(nomeArquivo, "r");
     Estrada *estrada = getEstrada(nomeArquivo);
-    char *cidadeMenor = NULL;
+    if (!estrada) return NULL;
+    for (int i = 0; i < estrada->N - 1; i++) {
+        for (int j = 0; j < estrada->N - i - 1; j++) {
+            if (estrada->C[j].Posicao > estrada->C[j + 1].Posicao) {
+                Cidade temp = estrada->C[j];
+                estrada->C[j] = estrada->C[j + 1];
+                estrada->C[j + 1] = temp;
+            }
+        }
+    }
     double menorVizinhanca = calcularMenorVizinhanca(nomeArquivo);
-    for(int i = 0; i < estrada->N; i++) {
+    char *cidadeMenor = NULL;
+    for (int i = 0; i < estrada->N; i++) {
+        double inicio = (i == 0) ? 0 :
+            (estrada->C[i].Posicao + estrada->C[i - 1].Posicao) / 2.0;
+        double fim = (i == estrada->N - 1) ? estrada->T :
+            (estrada->C[i].Posicao + estrada->C[i + 1].Posicao) / 2.0;
+
+        double vizinhanca = fim - inicio;
+
+        if (vizinhanca == menorVizinhanca) {
             if (cidadeMenor) free(cidadeMenor);
             cidadeMenor = strdup(estrada->C[i].Nome);
+            break;
+        }
     }
 
     printf("Menor vizinhança: %s\n", cidadeMenor);
-
-
-    fechararq(arquivo);
+    free(estrada->C);
+    free(estrada);
     return cidadeMenor;
 }
