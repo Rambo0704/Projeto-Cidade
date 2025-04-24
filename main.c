@@ -3,6 +3,8 @@
 #include <string.h>
 #include "cidades.h"
 int main() {
-    cidadeMenorVizinhanca("cidades.txt");
+    char *cidadeMenor = cidadeMenorVizinhanca("cidades.txt");
+    printf("Cidade com menor vizinhanca: %s\n", cidadeMenor);
+    
     return 0;
 }
