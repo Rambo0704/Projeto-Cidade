@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h> // para fabs()
+#include <math.h> 
 #include "cidades.h"
 FILE *abrirarq(const char *nomeArquivo, const char *modo) {//função para facilitar abertura do arquivo
     FILE *arq = fopen(nomeArquivo, modo);
